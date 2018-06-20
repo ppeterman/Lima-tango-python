@@ -185,6 +185,21 @@ class LimaCCDs(PyTango.Device_4Impl) :
         Core.Bpp32S : "Bpp32S",
         }
 
+    ImageTypeFromString = {
+	"Bpp8" : Core.Bpp8,
+        "Bpp8S" : Core.Bpp8S,
+        "Bpp10" : Core.Bpp10,
+        "Bpp10S" : Core.Bpp10S,
+        "Bpp12" : Core.Bpp12,
+        "Bpp12S" : Core.Bpp12S,
+        "Bpp14" : Core.Bpp14,
+        "Bpp14S" : Core.Bpp14S, 
+        "Bpp16" : Core.Bpp16,
+        "Bpp16S" : Core.Bpp16S,
+        "Bpp32" : Core.Bpp32,
+        "Bpp32S" : Core.Bpp32S
+        }
+
     # DATA_ARRAY DevEncoded 
     #enum DataArrayCategory {
         #ScalarStack = 0;
@@ -992,6 +1007,14 @@ class LimaCCDs(PyTango.Device_4Impl) :
         sizes = [signed, depth, dim.getSize().getWidth(), dim.getSize().getHeight()]
         
         attr.set_value(sizes)
+	
+    ## @brief Read image type
+    #
+    @Core.DEB_MEMBER_FUNCT
+    def write_image_type(self,attr) :
+        image = self.__control.image()
+	coreType = self.ImageTypeFromString.get(attr,"?")
+        image.setImageType(coreType)
 
     ## @brief Read image type
     #
@@ -2217,7 +2240,7 @@ class LimaCCDsClass(PyTango.DeviceClass) :
         'image_type':
         [[PyTango.DevString,
           PyTango.SCALAR,
-          PyTango.READ]],
+          PyTango.READ_WRITE]],
         'image_width':
         [[PyTango.DevULong,
           PyTango.SCALAR,
