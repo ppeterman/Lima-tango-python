@@ -1007,13 +1007,13 @@ class LimaCCDs(PyTango.Device_4Impl) :
         sizes = [signed, depth, dim.getSize().getWidth(), dim.getSize().getHeight()]
         
         attr.set_value(sizes)
-	
+
     ## @brief Read image type
     #
     @Core.DEB_MEMBER_FUNCT
     def write_image_type(self,attr) :
         image = self.__control.image()
-	coreType = self.ImageTypeFromString.get(attr,"?")
+        coreType = self.ImageTypeFromString.get(attr,"?")
         image.setImageType(coreType)
 
     ## @brief Read image type
